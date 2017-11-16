@@ -1,5 +1,6 @@
 package com.centennialdesigns.funsheet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -115,6 +116,9 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_login_logout) {
 
+        } else if (id == R.id.nav_about) {
+            Intent intent = new Intent(this, AboutActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

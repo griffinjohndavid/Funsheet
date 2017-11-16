@@ -50,7 +50,6 @@ public class DataFetcher {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.d("Res", response.toString());
 
                         try {
 //                            JSONArray jsonArray = response.getJSONArray("cards");
@@ -69,9 +68,9 @@ public class DataFetcher {
                                 List<String> tags = new ArrayList<String>();
                                 String[] array = tagsArray.split("(,\\s)");
                                 for (String tag : array) {
-
+                                    tags.add(tag);
                                 }
-//                                card.setTags(tags);
+                                card.setTags(tags);
                                 cards.add(card);
                             }
 

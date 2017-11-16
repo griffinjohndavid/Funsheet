@@ -64,7 +64,6 @@ public class ListFragment extends Fragment {
             fetcher.getCards(location, new DataFetcher.OnCardsReceivedListener() {
                 @Override
                 public void onCardsReceived(List<Card> newCards) {
-                    Log.d("Cards", newCards.toString());
                     CardAdapter adapter = new CardAdapter(newCards);
                     recyclerView.setAdapter(adapter);
                 }
@@ -109,7 +108,7 @@ public class ListFragment extends Fragment {
 
             mRatingBar.setRating(mCard.getRating());
 
-            //mTagsTextView.setText(mCard.getTags());
+            mTagsTextView.setText(mCard.getTags());
         }
 
         @Override
