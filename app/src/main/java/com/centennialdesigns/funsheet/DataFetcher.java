@@ -22,10 +22,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import im.delight.android.location.SimpleLocation;
+
 public class DataFetcher {
 
     final private String mUserKey = "156c3769-5138-4cee-aeef-bfb7e377ae3f";
     final private String mProjectKey = "63e283e0-4d20-4e67-b307-e2dc967ed5e0";
+    private SimpleLocation mLocation;
 
     public interface OnCardsReceivedListener {
         void onCardsReceived(List<Card> cards);
@@ -39,10 +42,16 @@ public class DataFetcher {
 
     public void getCards(@Nullable String location, final OnCardsReceivedListener listener) {
 
+        mLocation = new SimpleLocation(mContext, true);
+        if (!mLocation.hasLocationEnabled()) {
+            // ask the user to enable location access
+            SimpleLocation.openSettings(mContext);
+        }
+
         final List<Card> cards = new ArrayList<>();
         final TextView mTextView = new TextView(mContext);
         RequestQueue queue = Volley.newRequestQueue(mContext);
-        String url = "https://funsheet.centennialdesigns.com/activities?lat=35.2468&long=-91.7337";
+        String url = "https://funsheet.centennialdesigns.com/activities?lat=" + mLocation.getLatitude() + "&long=" + mLocation.getLongitude();
 
         // Request a string response from the provided URL.
         JsonArrayRequest jsonRequest = new JsonArrayRequest(Request.Method.GET, url,
