@@ -42,17 +42,16 @@ public class DataFetcher {
         final List<Card> cards = new ArrayList<>();
         final TextView mTextView = new TextView(mContext);
         RequestQueue queue = Volley.newRequestQueue(mContext);
-        String url = "http://funsheet.centennialdesigns.com/activities";
+        String url = "https://funsheet.centennialdesigns.com/activities?lat=35.2468&long=-91.7337";
 
         // Request a string response from the provided URL.
-        JsonArrayRequest jsonRequest = new JsonArrayRequest(Request.Method.POST, url,
+        JsonArrayRequest jsonRequest = new JsonArrayRequest(Request.Method.GET, url,
                 null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
 
                         try {
-//                            JSONArray jsonArray = response.getJSONArray("cards");
 
                             for (int i = 0; i < response.length(); i++)
                             {
@@ -63,7 +62,8 @@ public class DataFetcher {
                                 card.setDescription(jsonObject.getString("description"));
                                 card.setLatitude(jsonObject.getDouble("latitude"));
                                 card.setLongitude(jsonObject.getDouble("longitude"));
-                                card.setRating(BigDecimal.valueOf(jsonObject.getDouble("rating")).floatValue());
+                                card.setDistance(jsonObject.getDouble("distance"));
+                                //card.setRating(BigDecimal.valueOf(jsonObject.getDouble("rating")).floatValue());
                                 String tagsArray = jsonObject.getString("tags");
                                 List<String> tags = new ArrayList<String>();
                                 String[] array = tagsArray.split("(,\\s)");
@@ -85,17 +85,18 @@ public class DataFetcher {
             public void onErrorResponse(VolleyError error) {
                 listener.onErrorReceived(error);
             }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Content-Type", "application/json");
-                params.put("JsonStub-User-Key", mUserKey);
-                params.put("JsonStub-Project-Key", mProjectKey);
-
-                return params;
-            }
-        };
+        });
+//        {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("Content-Type", "application/json");
+//                params.put("JsonStub-User-Key", mUserKey);
+//                params.put("JsonStub-Project-Key", mProjectKey);
+//
+//                return params;
+//            }
+//        };
 //        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(
 //                20000,
 //                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,

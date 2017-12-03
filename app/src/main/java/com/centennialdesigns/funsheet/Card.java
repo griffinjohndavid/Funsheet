@@ -1,5 +1,6 @@
 package com.centennialdesigns.funsheet;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class Card {
     private double longitude;
     private List<String> tags;
     private float rating;
+    private double distance;
 
     Card() {}
 
@@ -87,5 +89,14 @@ public class Card {
 
     public void setRating(float rating) {
         this.rating = rating;
+    }
+
+    public String getDistance() {
+        DecimalFormat df = new DecimalFormat("###.##");
+        return Double.valueOf(df.format(distance)) + "mi";
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 }
