@@ -64,8 +64,15 @@ public class ListFragment extends Fragment {
             fetcher.getCards(location, new DataFetcher.OnCardsReceivedListener() {
                 @Override
                 public void onCardsReceived(List<Card> newCards) {
-                    CardAdapter adapter = new CardAdapter(newCards);
-                    recyclerView.setAdapter(adapter);
+
+                    if(recyclerView.getAdapter() == null) {
+                        CardAdapter adapter = new CardAdapter(newCards);
+                        recyclerView.setAdapter(adapter);
+                    }
+                    else {
+                        CardAdapter cardAdapter = new CardAdapter(newCards);
+                        mRecyclerView.setAdapter(cardAdapter);
+                    }
                 }
 
                 @Override
@@ -148,6 +155,9 @@ public class ListFragment extends Fragment {
 
         public void setCards(List<Card> cards) {
             mCards = cards;
+        }
+        public void clearCards(){
+            mCards.clear();
         }
     }
 
