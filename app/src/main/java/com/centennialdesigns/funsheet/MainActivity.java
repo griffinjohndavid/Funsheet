@@ -56,13 +56,14 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
 
-//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                // Refresh items
-//                onItemsLoadComplete();
-//            }
-//        });
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Refresh items
+                onItemsLoadComplete();
+            }
+        });
     }
 
     @Override

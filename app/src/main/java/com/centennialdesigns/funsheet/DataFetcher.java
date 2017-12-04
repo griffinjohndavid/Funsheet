@@ -47,7 +47,7 @@ public class DataFetcher {
             // ask the user to enable location access
             SimpleLocation.openSettings(mContext);
         }
-
+        mLocation.beginUpdates();
         final List<Card> cards = new ArrayList<>();
         final TextView mTextView = new TextView(mContext);
         RequestQueue queue = Volley.newRequestQueue(mContext);
@@ -111,5 +111,6 @@ public class DataFetcher {
 //                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
 //                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(jsonRequest);
+        mLocation.endUpdates();
     }
 }
