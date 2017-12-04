@@ -57,7 +57,7 @@ public class ListFragment extends Fragment {
         getCards(mRecyclerView, null);
     }
 
-    private void getCards(final RecyclerView recyclerView, @Nullable final String location) {
+    public void getCards(final RecyclerView recyclerView, @Nullable final String location) {
 
         if (Utility.isNetworkAvailable(getContext())) {
             DataFetcher fetcher = new DataFetcher(getContext());

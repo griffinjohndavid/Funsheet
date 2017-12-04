@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnCardSelectedListener {
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private ListFragment mCardsListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +51,11 @@ public class MainActivity extends AppCompatActivity
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        mCardsListFragment = (ListFragment) fragmentManager.findFragmentById(R.id.fragment_container);
 
-        if (fragment == null) {
-            fragment = new ListFragment();
-            fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
+        if (mCardsListFragment == null) {
+            mCardsListFragment = new ListFragment();
+            fragmentManager.beginTransaction().add(R.id.fragment_container, mCardsListFragment).commit();
         }
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
@@ -61,6 +63,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onRefresh() {
                 // Refresh items
+                RecyclerView recyclerView = (RecyclerView) findViewById(R.id.card_recycler_view);
+
+                mCardsListFragment.getCards(recyclerView, null);
+
                 onItemsLoadComplete();
             }
         });
