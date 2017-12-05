@@ -340,7 +340,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 SharedPreferences.Editor editor = getSharedPreferences(LOGIN_PREF_NAME, 0).edit();
                 editor.putString(USER_PREF_ID, mEmail);
                 editor.commit();
-
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
