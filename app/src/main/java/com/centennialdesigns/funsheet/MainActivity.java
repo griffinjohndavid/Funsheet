@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity
     public void onCardSelected(int id) {
         // Do nothing
     }
-    
+
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         if(!key.equals(LoginActivity.USER_PREF_ID))
