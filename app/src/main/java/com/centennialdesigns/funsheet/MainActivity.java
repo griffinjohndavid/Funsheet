@@ -27,7 +27,10 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnCardSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        ListFragment.OnCardSelectedListener,
+        SharedPreferences.OnSharedPreferenceChangeListener
+{
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ListFragment mCardsListFragment;
@@ -50,15 +53,19 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.getMenu().getItem(0).setChecked(true);
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
 
         SharedPreferences prefs = getSharedPreferences(LoginActivity.LOGIN_PREF_NAME, 0);
+        prefs.registerOnSharedPreferenceChangeListener(this);
         // Update username if logged in
         if(!prefs.getString(LoginActivity.USER_PREF_ID, "").equals("")){
+            // Show current user
             View headerView = navigationView.getHeaderView(0);
             TextView navHeaderName = (TextView) headerView.findViewById(R.id.nav_header_name);
             navHeaderName.setText(prefs.getString(LoginActivity.USER_PREF_ID, ""));
+
+            // Update login/logout
+            navigationView.getMenu().findItem(R.id.nav_login_logout).setTitle("Logout");
         }
 
 
@@ -83,13 +90,18 @@ public class MainActivity extends AppCompatActivity
 
                 mCardsListFragment.getCards(recyclerView, null);
 
-                onItemsLoadComplete();
             }
         });
 
-
-
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.getMenu().getItem(0).setChecked(true);
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -158,8 +170,16 @@ public class MainActivity extends AppCompatActivity
         }else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_login_logout) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+            SharedPreferences prefs = getSharedPreferences(LoginActivity.LOGIN_PREF_NAME, 0);
+
+            if(prefs.getString(LoginActivity.USER_PREF_ID, "").equals("")) {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            }
+            else {
+                prefs.edit().remove(LoginActivity.USER_PREF_ID).commit();
+            }
+
 
         } else if (id == R.id.nav_about) {
             Intent intent = new Intent(this, AboutActivity.class);
@@ -175,12 +195,29 @@ public class MainActivity extends AppCompatActivity
     public void onCardSelected(int id) {
         // Do nothing
     }
+    
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+        if(!key.equals(LoginActivity.USER_PREF_ID))
+            return;
 
-    public void onItemsLoadComplete() {
-        // Update the adapter and notify data set changed
-        // ...
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navHeaderName = (TextView) headerView.findViewById(R.id.nav_header_name);
+        MenuItem loginLogout = navigationView.getMenu().findItem(R.id.nav_login_logout);
 
-        // Stop refresh animation
-        mSwipeRefreshLayout.setRefreshing(false);
+        // Update username if logged in
+        if(!prefs.getString(LoginActivity.USER_PREF_ID, "").equals("")){
+            // Show current user
+            navHeaderName.setText(prefs.getString(LoginActivity.USER_PREF_ID, ""));
+            // Update login/logout
+            loginLogout.setTitle("Logout");
+        }
+        else{
+            navHeaderName.setText(getString(R.string.please_login));
+            loginLogout.setTitle("Login");
+        }
+        navigationView.getMenu().getItem(0).setChecked(true);
+
     }
 }
