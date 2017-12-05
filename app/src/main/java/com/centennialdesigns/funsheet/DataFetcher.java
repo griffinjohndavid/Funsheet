@@ -12,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,6 +33,11 @@ public class DataFetcher {
     public interface OnCardsReceivedListener {
         void onCardsReceived(List<Card> cards);
         void onErrorReceived(VolleyError error);
+    }
+
+    public interface OnLoginSuccessListener {
+        void onLoginSuccess(String message);
+        void onLoginError(VolleyError error);
     }
 
     private Context mContext;
@@ -107,6 +113,57 @@ public class DataFetcher {
 //                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
 //                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(jsonRequest);
+//        mLocation.endUpdates();
+    }
+
+    public void login(final String username, final String password, final OnLoginSuccessListener listener) {
+
+        RequestQueue queue = Volley.newRequestQueue(mContext);
+        String url = "https://funsheet.centennialdesigns.com/login";
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            listener.onLoginSuccess(response);
+                        }
+                        catch (Exception ex) {
+                            Log.d("Error", "Error: " + ex.toString());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onLoginError(error);
+            }
+        }) {
+            @Override
+            public Map<String, String> getParams(){
+                Map<String, String> params = new HashMap<>();
+                params.put("username", username);
+                params.put("password", password);
+                return params;
+            }
+        };
+//        {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("Content-Type", "application/json");
+//                params.put("JsonStub-User-Key", mUserKey);
+//                params.put("JsonStub-Project-Key", mProjectKey);
+//
+//                return params;
+//            }
+//        };
+//        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(
+//                20000,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(stringRequest);
 //        mLocation.endUpdates();
     }
 }
