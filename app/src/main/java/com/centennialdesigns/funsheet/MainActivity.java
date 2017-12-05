@@ -160,11 +160,9 @@ public class MainActivity extends AppCompatActivity
                 fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
             }
 
-        } else if (id == R.id.nav_add) {
-
         } else if (id == R.id.nav_favorites) {
 
-        }else if (id == R.id.nav_settings) {
+        } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_login_logout) {
             SharedPreferences prefs = getSharedPreferences(LoginActivity.LOGIN_PREF_NAME, 0);
@@ -219,7 +217,7 @@ public class MainActivity extends AppCompatActivity
     private void resetOptionSelection(){
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().findItem(R.id.nav_home).setChecked(true);
-        navigationView.getMenu().
+        //navigationView.getMenu().
         //navigationView.getMenu().getItem(0).setChecked(true);
     }
 }
