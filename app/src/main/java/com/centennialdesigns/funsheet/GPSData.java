@@ -22,7 +22,8 @@ public class GPSData {
 
     private GPSData(Context context) {
 
-        mLocation = new SimpleLocation(context, true, false, 100);
+        // Params: context, Require Fine Location, Use Passive Mode, Update Interval (ms)
+        mLocation = new SimpleLocation(context, true, false, 1000);
         if (!mLocation.hasLocationEnabled()) {
             // ask the user to enable location access
             SimpleLocation.openSettings(context);
