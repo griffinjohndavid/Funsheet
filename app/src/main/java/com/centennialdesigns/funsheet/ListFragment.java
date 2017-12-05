@@ -70,8 +70,9 @@ public class ListFragment extends Fragment {
                         recyclerView.setAdapter(adapter);
                     }
                     else {
-                        CardAdapter cardAdapter = new CardAdapter(newCards);
-                        mRecyclerView.setAdapter(cardAdapter);
+                        CardAdapter cardAdapter = (CardAdapter) mRecyclerView.getAdapter();
+                        cardAdapter.setCards(newCards);
+                        cardAdapter.notifyDataSetChanged();
                     }
                 }
 

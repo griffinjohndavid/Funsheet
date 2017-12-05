@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -156,7 +155,7 @@ public class MainActivity extends AppCompatActivity
         // Do nothing
     }
 
-    void onItemsLoadComplete() {
+    public void onItemsLoadComplete() {
         // Update the adapter and notify data set changed
         // ...
 
