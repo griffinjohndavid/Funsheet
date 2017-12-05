@@ -3,6 +3,7 @@ package com.centennialdesigns.funsheet;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -43,6 +44,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+
+    public static final String LOGIN_PREF_NAME = "login";
+    public static final String USER_PREF_ID = "username";
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -333,6 +337,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
+                SharedPreferences.Editor editor = getSharedPreferences(LOGIN_PREF_NAME, 0).edit();
+                editor.putString(USER_PREF_ID, mEmail);
+                editor.commit();
+
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
