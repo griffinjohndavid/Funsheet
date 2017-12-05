@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ListFragment mCardsListFragment;
 
-    //TODO: Add shared pref change listener to populate email field when logged in
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,8 +96,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.getMenu().getItem(0).setChecked(true);
+        resetOptionSelection();
     }
 
     @Override
@@ -179,8 +176,7 @@ public class MainActivity extends AppCompatActivity
             else {
                 prefs.edit().remove(LoginActivity.USER_PREF_ID).commit();
             }
-
-
+            resetOptionSelection();
         } else if (id == R.id.nav_about) {
             Intent intent = new Intent(this, AboutActivity.class);
             startActivity(intent);
@@ -216,8 +212,14 @@ public class MainActivity extends AppCompatActivity
         else{
             navHeaderName.setText(getString(R.string.please_login));
             loginLogout.setTitle("Login");
-        }
-        navigationView.getMenu().getItem(0).setChecked(true);
 
+        }
+
+    }
+    private void resetOptionSelection(){
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.getMenu().findItem(R.id.nav_home).setChecked(true);
+        navigationView.getMenu().
+        //navigationView.getMenu().getItem(0).setChecked(true);
     }
 }
