@@ -2,6 +2,7 @@ package com.centennialdesigns.funsheet;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -20,12 +21,18 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ListFragment.OnCardSelectedListener {
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ListFragment mCardsListFragment;
+
+    //TODO: Add shared pref change listener to populate email field when logged in
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +52,15 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
+
+        SharedPreferences prefs = getSharedPreferences(LoginActivity.LOGIN_PREF_NAME, 0);
+        // Update username if logged in
+        if(!prefs.getString(LoginActivity.USER_PREF_ID, "").equals("")){
+            View headerView = navigationView.getHeaderView(0);
+            TextView navHeaderName = (TextView) headerView.findViewById(R.id.nav_header_name);
+            navHeaderName.setText(prefs.getString(LoginActivity.USER_PREF_ID, ""));
+        }
+
 
         while (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) < 0) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
@@ -70,6 +86,9 @@ public class MainActivity extends AppCompatActivity
                 onItemsLoadComplete();
             }
         });
+
+
+
     }
     @Override
     public void onBackPressed() {
