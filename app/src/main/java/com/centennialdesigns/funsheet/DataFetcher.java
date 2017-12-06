@@ -3,32 +3,22 @@ package com.centennialdesigns.funsheet;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.TextView;
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import im.delight.android.location.SimpleLocation;
-
 public class DataFetcher {
-
-    final private String mUserKey = "156c3769-5138-4cee-aeef-bfb7e377ae3f";
-    final private String mProjectKey = "63e283e0-4d20-4e67-b307-e2dc967ed5e0";
 
     public interface OnCardsReceivedListener {
         void onCardsReceived(List<Card> cards);
@@ -48,7 +38,6 @@ public class DataFetcher {
     public void getCards(@Nullable String location, final OnCardsReceivedListener listener) {
 
         final List<Card> cards = new ArrayList<>();
-        final TextView mTextView = new TextView(mContext);
         RequestQueue queue = Volley.newRequestQueue(mContext);
         double latitude = GPSData.getInstance(mContext).getLatitude();
         double longitude = GPSData.getInstance(mContext).getLongitude();
@@ -74,14 +63,16 @@ public class DataFetcher {
                                 card.setLatitude(jsonObject.getDouble("latitude"));
                                 card.setLongitude(jsonObject.getDouble("longitude"));
                                 card.setDistance(jsonObject.getDouble("distance"));
-                                //card.setRating(BigDecimal.valueOf(jsonObject.getDouble("rating")).floatValue());
+                                card.setRating(BigDecimal.valueOf(jsonObject.getDouble("rating")).floatValue());
+                                card.setReviewCount(jsonObject.getInt("reviewCount"));
                                 String tagsArray = jsonObject.getString("tags");
-                                List<String> tags = new ArrayList<String>();
+                                List<String> tags = new ArrayList<>();
                                 String[] array = tagsArray.split("(,\\s)");
                                 for (String tag : array) {
                                     tags.add(tag);
                                 }
                                 card.setTags(tags);
+                                card.setPrice(jsonObject.getInt("price"));
                                 cards.add(card);
                             }
 
@@ -97,23 +88,7 @@ public class DataFetcher {
                 listener.onErrorReceived(error);
             }
         });
-//        {
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("Content-Type", "application/json");
-//                params.put("JsonStub-User-Key", mUserKey);
-//                params.put("JsonStub-Project-Key", mProjectKey);
-//
-//                return params;
-//            }
-//        };
-//        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(
-//                20000,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(jsonRequest);
-//        mLocation.endUpdates();
     }
 
     public void login(final String username, final String password, final OnLoginSuccessListener listener) {
@@ -148,22 +123,6 @@ public class DataFetcher {
                 return params;
             }
         };
-//        {
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("Content-Type", "application/json");
-//                params.put("JsonStub-User-Key", mUserKey);
-//                params.put("JsonStub-Project-Key", mProjectKey);
-//
-//                return params;
-//            }
-//        };
-//        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(
-//                20000,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
-//        mLocation.endUpdates();
     }
 }

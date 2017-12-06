@@ -16,7 +16,9 @@ public class Card implements Parcelable{
     private double longitude;
     private List<String> tags;
     private float rating;
+    private int reviewCount;
     private double distance;
+    private int price;
 
     Card() {}
 
@@ -99,6 +101,14 @@ public class Card implements Parcelable{
         this.rating = rating;
     }
 
+    public int getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(int reviewCount) {
+        this.reviewCount = reviewCount;
+    }
+
     public String getDistance() {
         DecimalFormat df = new DecimalFormat("###.##");
         return Double.valueOf(df.format(distance)) + "mi";
@@ -106,6 +116,14 @@ public class Card implements Parcelable{
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator(){
@@ -128,9 +146,10 @@ public class Card implements Parcelable{
         dest.writeString(description);
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
-        //dest.writeList(tags);
         dest.writeFloat(rating);
+        dest.writeInt(reviewCount);
         dest.writeDouble(distance);
+        dest.writeInt(price);
     }
 
     private void readFromParcel(Parcel parcel) {
@@ -139,9 +158,9 @@ public class Card implements Parcelable{
         description = parcel.readString();
         latitude = parcel.readDouble();
         longitude = parcel.readDouble();
-        //parcel.readList(tags, null);
         rating = parcel.readFloat();
+        reviewCount = parcel.readInt();
         distance = parcel.readDouble();
+        price = parcel.readInt();
     }
-
 }

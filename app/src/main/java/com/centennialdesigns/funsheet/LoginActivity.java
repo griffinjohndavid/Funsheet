@@ -39,24 +39,9 @@ import java.util.List;
 public class LoginActivity extends AppCompatActivity
         implements DataFetcher.OnLoginSuccessListener {
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
-
     public static final String LOGIN_PREF_NAME = "login";
     public static final String USER_PREF_ID = "username";
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
     private DataFetcher mLoginTask = null;
 
     // UI references.
@@ -98,12 +83,6 @@ public class LoginActivity extends AppCompatActivity
         mProgressView = findViewById(R.id.login_progress);
     }
 
-
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
     private void attemptLogin() {
         if (mLoginTask != null) {
             return;
@@ -114,7 +93,7 @@ public class LoginActivity extends AppCompatActivity
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mUsernameView.getText().toString();
+        String username = mUsernameView.getText().toString();
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
@@ -127,12 +106,12 @@ public class LoginActivity extends AppCompatActivity
             cancel = true;
         }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
+        // Check for a valid username.
+        if (TextUtils.isEmpty(username)) {
             mUsernameView.setError(getString(R.string.error_field_required));
             focusView = mUsernameView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        } else if (!isEmailValid(username)) {
             mUsernameView.setError(getString(R.string.error_invalid_username));
             focusView = mUsernameView;
             cancel = true;
@@ -147,7 +126,7 @@ public class LoginActivity extends AppCompatActivity
             // perform the user login attempt.
             showProgress(true);
             mLoginTask = new DataFetcher(this);
-            mLoginTask.login(email, password, this);
+            mLoginTask.login(username, password, this);
         }
     }
 
@@ -159,9 +138,6 @@ public class LoginActivity extends AppCompatActivity
         return password.length() > 4;
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
