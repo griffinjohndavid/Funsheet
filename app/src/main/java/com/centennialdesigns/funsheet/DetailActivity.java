@@ -46,6 +46,17 @@ public class DetailActivity extends AppCompatActivity {
         CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         toolbarLayout.setTitle(mCard.getTitle());
 
+        String price = "";
+        if (mCard.getPrice() > 0) {
+            price = new String(new char[mCard.getPrice()]).replace("\0", "$");
+        } else {
+            price = "Free";
+        }
+
+        TextView distanceTextView = (TextView) findViewById(R.id.detail_distance);
+        distanceTextView.setText(mCard.getDistance());
+        TextView priceTextView = (TextView) findViewById(R.id.detail_price);
+        priceTextView.setText(price);
         TextView descriptionTextView = (TextView) findViewById(R.id.location_description);
         descriptionTextView.setText(mCard.getDescription());
         ImageView background = (ImageView) findViewById(R.id.toolbarBG);

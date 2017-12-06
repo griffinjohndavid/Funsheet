@@ -120,7 +120,7 @@ public class ListFragment extends Fragment {
             mDescriptionTextView.setText(Html.fromHtml(mCard.getDescription()));
             Linkify.addLinks(mDescriptionTextView, Linkify.WEB_URLS);
 
-            //mRatingBar.setRating(mCard.getRating());
+            mRatingBar.setRating(mCard.getRating());
 
             mTagsTextView.setText(mCard.getTags());
             mDistanceView.setText(mCard.getDistance());
