@@ -1,6 +1,9 @@
 package com.centennialdesigns.funsheet;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,18 +21,30 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent mapIntent = new Intent();
+                mapIntent.setAction(Intent.ACTION_VIEW);
+                String uriString = "geo:0,0?q="
+                        + mCard.getLatitude() + "," + mCard.getLongitude()
+                        + "(" + mCard.getTitle() + ")";
+                mapIntent.setData(Uri.parse(uriString));
+                startActivity(mapIntent);
             }
         });
 
         mCard = getIntent().getExtras().getParcelable(PARCEL_ID);
+
+        CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        toolbarLayout.setTitle(mCard.getTitle());
+
+
     }
 
-    
+
 }
