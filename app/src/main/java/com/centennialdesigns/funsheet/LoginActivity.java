@@ -309,7 +309,8 @@ public class LoginActivity extends AppCompatActivity
             mEmailView.requestFocus();
         }
         else if(message.equals("ERROR_NO_PASSWORD")){
-
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.requestFocus();
         }
         else if(message.equals("ERROR_NO_USER_FOUND")){
             mEmailView.setError(getString(R.string.error_invalid_username));
@@ -319,6 +320,7 @@ public class LoginActivity extends AppCompatActivity
 
     @Override
     public void onLoginError(VolleyError error) {
+        showProgress(false);
         Toast.makeText(this, "Network Error", Toast.LENGTH_LONG).show();
         Log.d("Login Error", error.toString());
     }
@@ -334,64 +336,5 @@ public class LoginActivity extends AppCompatActivity
         int IS_PRIMARY = 1;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            //mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                SharedPreferences.Editor editor = getSharedPreferences(LOGIN_PREF_NAME, 0).edit();
-                editor.putString(USER_PREF_ID, mEmail);
-                editor.commit();
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mLoginTask = null;
-            showProgress(false);
-        }
-    }
 }
 
