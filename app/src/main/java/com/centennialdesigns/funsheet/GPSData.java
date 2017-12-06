@@ -29,7 +29,15 @@ public class GPSData {
             SimpleLocation.openSettings(context);
         }
 
+        startUpdatingGPS();
+    }
+
+    public void startUpdatingGPS(){
         mLocation.beginUpdates();
+    }
+
+    public void stopUpdatingGPS(){
+        mLocation.endUpdates();
     }
 
     public double getLatitude(){

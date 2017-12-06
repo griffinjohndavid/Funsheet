@@ -90,13 +90,18 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         resetOptionSelection();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        GPSData.getInstance(getApplicationContext()).stopUpdatingGPS();
     }
 
     @Override
