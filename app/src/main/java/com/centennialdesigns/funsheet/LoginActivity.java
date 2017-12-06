@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +30,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
@@ -182,7 +184,7 @@ public class LoginActivity extends AppCompatActivity
             focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
+            mEmailView.setError(getString(R.string.error_invalid_username));
             focusView = mEmailView;
             cancel = true;
         }
@@ -201,12 +203,10 @@ public class LoginActivity extends AppCompatActivity
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+        return email.length() > 2;
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
@@ -293,20 +293,34 @@ public class LoginActivity extends AppCompatActivity
     public void onLoginSuccess(String message) {
         showProgress(false);
 
-        if (success) {
+        if (message.equals("SUCCESS_LOGGED_IN")) {
             SharedPreferences.Editor editor = getSharedPreferences(LOGIN_PREF_NAME, 0).edit();
-            editor.putString(USER_PREF_ID, mEmail);
+            editor.putString(USER_PREF_ID, mEmailView.getText().toString());
             editor.commit();
             finish();
-        } else {
+        }
+        else if(message.equals("ERROR_INCORRECT_PASSWORD"))
+        {
             mPasswordView.setError(getString(R.string.error_incorrect_password));
             mPasswordView.requestFocus();
+        }
+        else if(message.equals("ERROR_NO_USERNAME")){
+            mEmailView.setError(getString(R.string.error_field_required));
+            mEmailView.requestFocus();
+        }
+        else if(message.equals("ERROR_NO_PASSWORD")){
+
+        }
+        else if(message.equals("ERROR_NO_USER_FOUND")){
+            mEmailView.setError(getString(R.string.error_invalid_username));
+            mEmailView.requestFocus();
         }
     }
 
     @Override
     public void onLoginError(VolleyError error) {
-
+        Toast.makeText(this, "Network Error", Toast.LENGTH_LONG).show();
+        Log.d("Login Error", error.toString());
     }
 
 
@@ -359,7 +373,7 @@ public class LoginActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
+            //mAuthTask = null;
             showProgress(false);
 
             if (success) {
@@ -375,7 +389,7 @@ public class LoginActivity extends AppCompatActivity
 
         @Override
         protected void onCancelled() {
-            mAuthTask = null;
+            mLoginTask = null;
             showProgress(false);
         }
     }
