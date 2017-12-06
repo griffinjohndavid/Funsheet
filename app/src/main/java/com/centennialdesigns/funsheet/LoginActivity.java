@@ -37,8 +37,7 @@ import java.util.List;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity
-        implements LoaderCallbacks<Cursor>,
-        DataFetcher.OnLoginSuccessListener {
+        implements DataFetcher.OnLoginSuccessListener {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -197,38 +196,6 @@ public class LoginActivity extends AppCompatActivity
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
-
-    @Override
     public void onLoginSuccess(String message) {
         showProgress(false);
 
@@ -237,21 +204,16 @@ public class LoginActivity extends AppCompatActivity
             editor.putString(USER_PREF_ID, mUsernameView.getText().toString());
             editor.commit();
             finish();
-        }
-        else if(message.equals("ERROR_INCORRECT_PASSWORD"))
-        {
+        } else if (message.equals("ERROR_INCORRECT_PASSWORD")) {
             mPasswordView.setError(getString(R.string.error_incorrect_password));
             mPasswordView.requestFocus();
-        }
-        else if(message.equals("ERROR_NO_USERNAME")){
+        } else if (message.equals("ERROR_NO_USERNAME")) {
             mUsernameView.setError(getString(R.string.error_field_required));
             mUsernameView.requestFocus();
-        }
-        else if(message.equals("ERROR_NO_PASSWORD")){
+        } else if (message.equals("ERROR_NO_PASSWORD")) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             mPasswordView.requestFocus();
-        }
-        else if(message.equals("ERROR_NO_USER_FOUND")){
+        } else if (message.equals("ERROR_NO_USER_FOUND")) {
             mUsernameView.setError(getString(R.string.error_invalid_username));
             mUsernameView.requestFocus();
         }
@@ -265,17 +227,5 @@ public class LoginActivity extends AppCompatActivity
         Toast.makeText(this, "Network Error", Toast.LENGTH_LONG).show();
         Log.d("Login Error", error.toString());
     }
-
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
 }
 
