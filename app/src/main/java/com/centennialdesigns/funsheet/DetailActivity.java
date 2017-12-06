@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -46,6 +49,9 @@ public class DetailActivity extends AppCompatActivity {
 
         TextView descriptionTextView = (TextView) findViewById(R.id.location_description);
         descriptionTextView.setText(mCard.getDescription());
+        ImageView background = (ImageView) findViewById(R.id.toolbarBG);
+        Picasso.with(getApplicationContext()).load("https://funsheet.centennialdesigns.com/img/" + mCard.getId() + ".jpg").into(background);
+
     }
 
 
