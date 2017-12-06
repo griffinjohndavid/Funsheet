@@ -1,10 +1,13 @@
 package com.centennialdesigns.funsheet;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Card {
+public class Card implements Parcelable{
 
     private int id;
     private String title;
@@ -26,6 +29,11 @@ public class Card {
         this.tags = tags;
         this.rating = rating;
     }
+
+    Card(Parcel parcel) {
+        readFromParcel(parcel);
+    }
+
 
     public int getId() {
         return id;
@@ -99,4 +107,41 @@ public class Card {
     public void setDistance(double distance) {
         this.distance = distance;
     }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator(){
+        public Card createFromParcel(Parcel in){
+            return new Card(in);
+        }
+        public Card[] newArray(int size){
+            return new Card[size];
+        }
+    };
+
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
+        //dest.writeList(tags);
+        dest.writeFloat(rating);
+        dest.writeDouble(distance);
+    }
+
+    private void readFromParcel(Parcel parcel) {
+        id = parcel.readInt();
+        title = parcel.readString();
+        description = parcel.readString();
+        latitude = parcel.readDouble();
+        longitude = parcel.readDouble();
+        //parcel.readList(tags, null);
+        rating = parcel.readFloat();
+        distance = parcel.readDouble();
+    }
+
 }

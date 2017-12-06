@@ -9,6 +9,9 @@ import android.view.View;
 
 public class DetailActivity extends AppCompatActivity {
 
+    public static final String PARCEL_ID = "parcel_id";
+    private Card mCard;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,5 +27,9 @@ public class DetailActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        mCard = getIntent().getExtras().getParcelable(PARCEL_ID);
     }
+
+    
 }

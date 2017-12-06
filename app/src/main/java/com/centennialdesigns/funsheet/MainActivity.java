@@ -191,8 +191,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onCardSelected(int id) {
-        // Do nothing
+    public void onCardSelected(Card card) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.PARCEL_ID, card);
+        startActivity(intent);
     }
 
     @Override

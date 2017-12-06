@@ -24,7 +24,7 @@ import java.util.List;
 
 public class ListFragment extends Fragment {
     public interface OnCardSelectedListener {
-        void onCardSelected(int id);
+        void onCardSelected(Card card);
     }
 
     private List<Card> mCards = new ArrayList<>();
@@ -129,7 +129,7 @@ public class ListFragment extends Fragment {
         @Override
         public void onClick(View view) {
             // Tell MainActivity what card was clicked
-            mListener.onCardSelected(mCard.getId());
+            mListener.onCardSelected(mCard);
         }
     }
 
