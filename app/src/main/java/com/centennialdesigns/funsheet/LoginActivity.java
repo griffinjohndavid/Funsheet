@@ -255,11 +255,13 @@ public class LoginActivity extends AppCompatActivity
             mUsernameView.setError(getString(R.string.error_invalid_username));
             mUsernameView.requestFocus();
         }
+        mLoginTask = null;
     }
 
     @Override
     public void onLoginError(VolleyError error) {
         showProgress(false);
+        mLoginTask = null;
         Toast.makeText(this, "Network Error", Toast.LENGTH_LONG).show();
         Log.d("Login Error", error.toString());
     }
