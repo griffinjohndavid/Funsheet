@@ -30,6 +30,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +40,9 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity
+        implements LoaderCallbacks<Cursor>,
+        DataFetcher.OnLoginSuccessListener {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -58,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+    private DataFetcher mLoginTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -150,7 +154,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
+        if (mLoginTask != null) {
             return;
         }
 
@@ -191,8 +195,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            mLoginTask = new DataFetcher(this);
+            mLoginTask.login(email, password, this);
         }
     }
 
@@ -283,6 +287,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onLoginSuccess(String message) {
+        showProgress(false);
+
+        if (success) {
+            SharedPreferences.Editor editor = getSharedPreferences(LOGIN_PREF_NAME, 0).edit();
+            editor.putString(USER_PREF_ID, mEmail);
+            editor.commit();
+            finish();
+        } else {
+            mPasswordView.setError(getString(R.string.error_incorrect_password));
+            mPasswordView.requestFocus();
+        }
+    }
+
+    @Override
+    public void onLoginError(VolleyError error) {
+
     }
 
 
