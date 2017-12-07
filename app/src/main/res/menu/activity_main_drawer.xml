@@ -8,9 +8,13 @@
             android:icon="@drawable/ic_menu_home"
             android:title="Home" />
         <item
+            android:id="@+id/nav_favorites"
+            android:icon="@drawable/ic_menu_favorites"
+            android:title="Favorites" />
+        <item
             android:id="@+id/nav_random"
             android:icon="@drawable/ic_menu_random"
-            android:title="Random" />
+            android:title="Settings" />
         <item
             android:id="@+id/nav_login_logout"
             android:icon="@drawable/ic_menu_login"
