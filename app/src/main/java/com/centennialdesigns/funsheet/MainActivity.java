@@ -26,6 +26,8 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ListFragment.OnCardSelectedListener,
@@ -168,6 +170,12 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_favorites) {
 
         } else if (id == R.id.nav_random) {
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.card_recycler_view);
+
+            Card card = mCardsListFragment.getRandomCard(recyclerView);
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.putExtra(DetailActivity.PARCEL_ID, card);
+            startActivity(intent);
 
         } else if (id == R.id.nav_login_logout) {
             SharedPreferences prefs = getSharedPreferences(LoginActivity.LOGIN_PREF_NAME, 0);

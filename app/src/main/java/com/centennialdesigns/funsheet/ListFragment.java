@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ListFragment extends Fragment {
     public interface OnCardSelectedListener {
@@ -89,6 +90,15 @@ public class ListFragment extends Fragment {
 
         }
 
+    }
+
+    public Card getRandomCard(RecyclerView recyclerView){
+        if(recyclerView.getAdapter() == null)
+            return null;
+        CardAdapter adapter = (CardAdapter) recyclerView.getAdapter();
+        List<Card> cards = adapter.getCards();
+        int rand = new Random().nextInt(cards.size());
+        return cards.get(rand);
     }
 
     private class CardHolder extends RecyclerView.ViewHolder
@@ -163,6 +173,9 @@ public class ListFragment extends Fragment {
         }
         public void clearCards(){
             mCards.clear();
+        }
+        public final List<Card> getCards(){
+            return mCards;
         }
     }
 
