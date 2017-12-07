@@ -74,7 +74,15 @@ public class DetailActivity extends AppCompatActivity
 
         mRatingBar = (RatingBar) findViewById(R.id.detail_rating);
         mRatingBar.setRating(mCard.getRating());
-        mRatingBar.setOnRatingBarChangeListener(this);
+
+        SharedPreferences prefs = getSharedPreferences(LoginActivity.LOGIN_PREF_NAME, 0);
+        String user = prefs.getString(LoginActivity.USER_PREF_ID, "");
+        if(user.equals("")){
+            mRatingBar.setIsIndicator(true);
+        }
+        else {
+            mRatingBar.setOnRatingBarChangeListener(this);
+        }
     }
 
 
