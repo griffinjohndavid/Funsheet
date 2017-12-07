@@ -24,4 +24,5 @@ There are currently no issues known. If you discover an issue, please submit it 
 * Benoît Lacoss **_50%_**
 	* Created LoginActivity
 	* Created GPSData class
-	*
+	* Created Random functionality
+	* Added rating functionality
