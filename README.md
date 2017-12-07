@@ -8,12 +8,11 @@ Funsheet is an Android application that allows users to find fun things to do ne
 
 #### Features
 * A simple start screen showing the activities closest to the user
-* The ability for logged in users to give reviews on activities
-* Shake your device to display a random activity
+* The ability for logged in users to give ratings for activities
 * When viewing an activity you can opt to navigate to that activity via Google Maps
 
 #### Known Issues
-There are currently no issues known. If you discover an issue, please submit it via the [Issues](https://github.com/jgriffin3/Dots/issues) tab on GitHub.
+There are currently no issues known. If you discover an issue, please submit it via the [Issues](https://github.com/jgriffin3/Funsheet/issues) tab on GitHub.
 
 #### Team Contributions
 * John David Griffin **_50%_**

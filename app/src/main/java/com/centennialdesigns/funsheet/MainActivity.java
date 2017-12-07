@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_favorites) {
 
-        } else if (id == R.id.nav_settings) {
+        } else if (id == R.id.nav_random) {
 
         } else if (id == R.id.nav_login_logout) {
             SharedPreferences prefs = getSharedPreferences(LoginActivity.LOGIN_PREF_NAME, 0);
