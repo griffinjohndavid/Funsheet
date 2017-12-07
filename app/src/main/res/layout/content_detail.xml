@@ -77,6 +77,8 @@
             android:stepSize="1"
             android:numStars="5"
             android:isIndicator="false"
+            android:paddingBottom="@dimen/text_margin"
+
             />
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>
