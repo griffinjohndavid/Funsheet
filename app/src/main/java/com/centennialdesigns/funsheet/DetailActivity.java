@@ -1,22 +1,30 @@
 package com.centennialdesigns.funsheet;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.squareup.picasso.Picasso;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity
+    implements RatingBar.OnRatingBarChangeListener,
+    DataFetcher.OnRatingSentListener{
 
     public static final String PARCEL_ID = "parcel_id";
     private Card mCard;
+    private RatingBar mRatingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +72,42 @@ public class DetailActivity extends AppCompatActivity {
         ImageView background = (ImageView) findViewById(R.id.toolbarBG);
         Picasso.with(getApplicationContext()).load("https://funsheet.centennialdesigns.com/img/" + mCard.getId() + ".jpg").into(background);
 
+        mRatingBar = (RatingBar) findViewById(R.id.detail_rating);
+        mRatingBar.setRating(mCard.getRating());
+        mRatingBar.setOnRatingBarChangeListener(this);
     }
 
 
+    @Override
+    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+        if(!fromUser)
+            return;
+
+        //ratingBar.setRating(rating);
+        //ratingBar.setIsIndicator(true);
+        DataFetcher dataFetcher = new DataFetcher(this);
+
+        SharedPreferences prefs = getSharedPreferences(LoginActivity.LOGIN_PREF_NAME, 0);
+        String user = prefs.getString(LoginActivity.USER_PREF_ID, "");
+
+        dataFetcher.sendRating(user, rating, mCard.getId(), this);
+    }
+
+    @Override
+    public void onRatingSent(String message) {
+        if(message.equals("SUCCESS_REVIEW_SAVED")){
+            mRatingBar.setIsIndicator(true);
+            Toast.makeText(this, "Rating successfully sent", Toast.LENGTH_LONG).show();
+        }
+        else if(message.equals("ERROR_NOT_ADDED")){
+            Toast.makeText(this, "Server Error: Rating not added", Toast.LENGTH_LONG).show();
+            Log.d("Rating Error", message);
+        }
+    }
+
+    @Override
+    public void onRatingError(VolleyError error) {
+        Toast.makeText(this, "Network Error: Rating not sent", Toast.LENGTH_LONG).show();
+        Log.d("Rating Error", error.toString());
+    }
 }

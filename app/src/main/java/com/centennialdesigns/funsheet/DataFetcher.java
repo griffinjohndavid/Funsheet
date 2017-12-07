@@ -1,6 +1,7 @@
 package com.centennialdesigns.funsheet;
 
 import android.content.Context;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import com.android.volley.Request;
@@ -29,6 +30,12 @@ public class DataFetcher {
         void onLoginSuccess(String message);
         void onLoginError(VolleyError error);
     }
+
+    public interface OnRatingSentListener {
+        void onRatingSent(String message);
+        void onRatingError(VolleyError error);
+    }
+
 
     private Context mContext;
     public DataFetcher(Context context) {
@@ -125,4 +132,41 @@ public class DataFetcher {
         };
         queue.add(stringRequest);
     }
+    public void sendRating(final String username, final float rating, final int cardId, final OnRatingSentListener listener) {
+
+        RequestQueue queue = Volley.newRequestQueue(mContext);
+        String url = "https://funsheet.centennialdesigns.com/rateactivity";
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            listener.onRatingSent(response);
+                        }
+                        catch (Exception ex) {
+                            Log.d("Error", "Error: " + ex.toString());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onRatingError(error);
+            }
+        }) {
+            @Override
+            public Map<String, String> getParams(){
+                Map<String, String> params = new HashMap<>();
+                params.put("username", username);
+                params.put("id", Integer.toString(cardId));
+                params.put("rating", Float.toString(rating));
+                return params;
+            }
+        };
+        queue.add(stringRequest);
+    }
+
+
 }
