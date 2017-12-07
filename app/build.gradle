@@ -32,9 +32,5 @@ dependencies {
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.github.delight-im:Android-SimpleLocation:v1.0.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
-<<<<<<< HEAD
-=======
-    compile 'com.android.support:support-vector-drawable:25.3.1'
->>>>>>> parent of 591945b... more stuff
     testCompile 'junit:junit:4.12'
 }
