@@ -167,6 +167,8 @@ public class MainActivity extends AppCompatActivity
                 fragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit();
             }
 
+        } else if (id == R.id.nav_favorites) {
+
         } else if (id == R.id.nav_random) {
             RecyclerView recyclerView = (RecyclerView) findViewById(R.id.card_recycler_view);
 
