@@ -57,6 +57,8 @@ public class DetailActivity extends AppCompatActivity {
         distanceTextView.setText(mCard.getDistance());
         TextView priceTextView = (TextView) findViewById(R.id.detail_price);
         priceTextView.setText(price);
+        TextView tagsTextView = (TextView) findViewById(R.id.detail_tags);
+        tagsTextView.setText(mCard.getTags());
         TextView descriptionTextView = (TextView) findViewById(R.id.location_description);
         descriptionTextView.setText(mCard.getDescription());
         ImageView background = (ImageView) findViewById(R.id.toolbarBG);

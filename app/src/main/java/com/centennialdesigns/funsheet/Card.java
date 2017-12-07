@@ -150,6 +150,7 @@ public class Card implements Parcelable{
         dest.writeInt(reviewCount);
         dest.writeDouble(distance);
         dest.writeInt(price);
+        dest.writeList(tags);
     }
 
     private void readFromParcel(Parcel parcel) {
@@ -162,5 +163,7 @@ public class Card implements Parcelable{
         reviewCount = parcel.readInt();
         distance = parcel.readDouble();
         price = parcel.readInt();
+        tags = new ArrayList<>();
+        parcel.readList(tags, null);
     }
 }
