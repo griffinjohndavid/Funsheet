@@ -14,15 +14,6 @@ Funsheet is an Android application that allows users to find fun things to do ne
 #### Known Issues
 There are currently no issues known. If you discover an issue, please submit it via the [Issues](https://github.com/jgriffin3/Funsheet/issues) tab on GitHub.
 
-#### Team Contributions
-* John David Griffin **_50%_**
-	* Created repository
-	* Designed App Icon and Layouts
-	* Created server scripts and databases
-	* Created MainActivity, ListActivity, AboutActivity, and DetailsActivity
-	* Created the DataFetcher and Utility classes
-* Benoît Lacoss **_50%_**
-	* Created LoginActivity
-	* Created GPSData class
-	* Created Random functionality
-	* Added rating functionality
+#### Contributors
+* John David Griffin
+* Benoît Lacoss
