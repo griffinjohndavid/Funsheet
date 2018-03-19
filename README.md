@@ -1,4 +1,6 @@
 # [Funsheet](https://github.com/jgriffin3/Funsheet)
+> **_Please note that this project is not maintained. It may become maintained at a later date however. This project was used for a project in a course over Android development._**
+
 Funsheet is an Android application that allows users to find fun things to do near their current location. It uses GPS to calculate their current location then sends that to the server to get a list of activities in order of distance from the device.
 
 #### Requirements
